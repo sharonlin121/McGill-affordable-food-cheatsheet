@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Map with Google Reviews</title>
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBOxlpm8Rvp59VVhSpWQEke-LPC6QZnlQg&callback=initMap" async defer></script>
+    <script defer>
+        // Initialize and add the map
+        function initMap() {
+            // Center the map at an initial location
+            const mapDiv = document.getElementById("map");
+
+            const map = new google.maps.Map(mapDiv, {
+                center: { lat: 45.50407688231829, lng: -73.57829234603145 },
+                zoom: 13
+            });
+
+            // Add markers for each location
+            var locations = [
+                { lat: 45.50407688231829, lng: -73.57829234603145, placeId: 'ChIJ157_XkcayUwRXubgsDG6pAc' },
+                { lat: 45.50250862475622, lng: -73.55977595792324, placeId: 'ChIJ6b7N1lsayUwRFZqHbgfVsf0' },
+                { lat: 45.51442437040746, lng: -73.65663148768579, placeId: 'ChIJ613dvdEZyUwR6dzWOcemSKs' },
+                { lat: 45.502788569326285, lng: -73.57515842336905, placeId: 'ChIJd0uUtWAbyUwRRdvDG0dUGGI' },
+                { lat: 45.505108071220974, lng: -73.5730197616624, placeId: 'ChIJxzDURUYayUwRcwqGm0gjg-s' },
+                { lat: 45.50717559893613, lng: -73.57616747452194, placeId: ' ChIJQ9Iw_kcayUwR3hKWQMKc5Ak' },
+                { lat: 45.50724815577738, lng: -73.56072839965448, placeId: 'ChIJpZxMTFAayUwRrtD2t_98z90' },
+                { lat: 45.509976462066554, lng: -73.56407168986559, placeId: 'ChIJVSw9uU0ayUwR_9PJyI_xuIM' },
+                { lat: 45.49697965797825, lng: -73.57343616703433, placeId: 'ChIJrbrfubIbyUwRqPUN2Sorv2E' },
+                { lat: 45.497858765073524, lng: -73.57612844833363, placeId: 'ChIJk-xd4UEayUwR3y3npf7Liso' },
+                { lat: 45.4988557530328, lng: -73.57475918801447, placeId: 'ChIJ0cuxiUEayUwRoxD3zTYJSzU' }
+            ];
+
+            // Create markers and set them on the map
+            locations.forEach(function (location, index) {
+                const placeId = location.placeId;
+                const position = { lat: location.lat, lng: location.lng }
+
+                var marker = new google.maps.Marker({
+                    position: position,
+                    map: map
+                });
+
+                // Add click event listener to each marker
+                marker.addListener('click', function () {
+                    // Fetch Google Reviews using Place ID
+                    var service = new google.maps.places.PlacesService(map);
+
+                    var request = {
+                        placeId: placeId,
+                      // placeId: 'ChIJ157_XkcayUwRXubgsDG6pAc', // Replace with the actual Place ID
+                        fields: ['name', 'reviews']
+                    };
+
+                    // Fetch place details
+                    service.getDetails(request, function (place, status) {
+                        if (status === google.maps.places.PlacesServiceStatus.OK) {
+                            // Display reviews in an info window
+                            var contentString = '<div><strong>' + place.name + '</strong></div>';
+                            if (place.reviews) {
+                                contentString += '<ul>';
+                                place.reviews.forEach(function (review) {
+                                    contentString += '<li>' + review.text + '</li>';
+                                });
+                                contentString += '</ul>';
+                            } else {
+                                contentString += '<p>No reviews available.</p>';
+                            }
+
+                            var infowindow = new google.maps.InfoWindow({
+                                content: contentString
+                            });
+
+                            infowindow.open(map, marker);
+                        }
+                    });
+                });
+            });
+        }
+    </script>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+</body>
+</html>

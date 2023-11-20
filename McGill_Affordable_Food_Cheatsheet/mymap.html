@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Embedded Map with Multiple Locations</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBOxlpm8Rvp59VVhSpWQEke-LPC6QZnlQg&callback=initMap" async defer></script>
+    <script>
+        // Initialize and add the map
+        function initMap() {
+            // Center the map at an initial location
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: { lat: 45.50407688231829, lng: -73.57829234603145 },
+                zoom: 13
+            });
+
+            // Add markers for each location
+            var locations = [
+                { lat: 45.50407688231829, lng: -73.57829234603145 },
+                { lat: 45.50250862475622, lng: -73.55977595792324 },
+                { lat: 45.51442437040746, lng: -73.65663148768579 },
+                { lat: 45.502788569326285, lng: -73.57515842336905 },
+                { lat: 45.505108071220974, lng: -73.5730197616624 },
+                { lat: 45.50717559893613, lng: -73.57616747452194 },
+                { lat: 45.50724815577738, lng: -73.56072839965448 },
+                { lat: 45.509976462066554, lng: -73.56407168986559 },
+                { lat: 45.49697965797825, lng: -73.57343616703433 },
+                { lat: 45.497858765073524, lng: -73.57612844833363 },
+                { lat: 45.4988557530328, lng: -73.57475918801447 }
+            ];
+
+            // Create markers and set them on the map
+            locations.forEach(function (location) {
+                var marker = new google.maps.Marker({
+                    position: location,
+                    map: map
+                });
+            });
+        }
+    </script>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+</body>
+</html>
+
